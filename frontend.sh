@@ -9,6 +9,7 @@ echo Status = $?
 
 cd /usr/share/nginx/html
 
+
 echo removing old content
 rm -rf *  &>>$LOG_FILE
 echo status = $?
