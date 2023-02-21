@@ -1,1 +1,1 @@
-# roboshop-shell-scripts
+# shell script for RoboShop project
