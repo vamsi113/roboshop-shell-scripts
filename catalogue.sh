@@ -37,6 +37,15 @@ if [ $? -ne 0 ]; then
   fi
 fi
 
+echo "remove old content"
+rm -rf catalogue &>>${LOG_FILE}
+if [ $? -eq 0 ]; then
+  echo Status = SUCCESS
+else
+  echo Status = FAILURE
+  exit 1
+fi
+
 echo "download catalogue application code"
 curl -s -L -o /tmp/catalogue.zip "https://github.com/roboshop-devops-project/catalogue/archive/main.zip" &>>${LOG_FILE}
 if [ $? -eq 0 ]; then
