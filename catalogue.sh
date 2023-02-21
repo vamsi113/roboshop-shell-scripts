@@ -1,8 +1,14 @@
 LOG_FILE=/tmp/catalogue
 
+ID=$(id -u)
+if [ $ID -ne 0 ]; then
+  echo "you should run this script as root user or with sudo privileges."
+  exit 1
+fi
+
 echo "setting up nodejs"
 curl -sL https://rpm.nodesource.com/setup_lts.x | bash &>>${LOG_FILE}
-# shellcheck disable=SC1035
+
 if [ $? -eq 0 ]; then
   echo Status = SUCCESS
 else
@@ -19,13 +25,16 @@ else
   exit 1
 fi
 
-echo "adding Roboshop application User "
-useradd roboshop &>>${LOG_FILE}
-if [ $? -eq 0 ]; then
-  echo Status = SUCCESS
-else
-  echo Status = FAILURE
-  exit 1
+id roboshop &>>${LOG_FILE}
+if [ $? -ne 0 ]; then
+  echo "adding Roboshop application User "
+  useradd roboshop &>>${LOG_FILE}
+  if [ $? -eq 0 ]; then
+    echo Status = SUCCESS
+  else
+    echo Status = FAILURE
+    exit 1
+  fi
 fi
 
 echo "download catalogue application code"
