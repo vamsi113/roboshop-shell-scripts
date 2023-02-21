@@ -97,7 +97,7 @@ else
 fi
 
 echo "application starting"
-systemctl start catalogue &>>${LOG_FILE}
+systemctl restart catalogue &>>${LOG_FILE}
 if [ $? -eq 0 ]; then
   echo Status = SUCCESS
 else
