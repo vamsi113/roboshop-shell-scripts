@@ -1,5 +1,7 @@
 LOG_FILE=/tmp/mongodb
 
+source common.sh
+
 echo "setting MongoDB repo"
 curl -s -o /etc/yum.repos.d/mongodb.repo https://raw.githubusercontent.com/roboshop-devops-project/mongodb/main/mongo.repo &>>$LOG_FILE
 echo Status =$?
