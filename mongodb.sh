@@ -17,7 +17,7 @@ StatusCheck $?
 echo "starting mongodb service"
 systemctl enable mongod &>>$LOG_FILE
 systemctl restart mongod &>>$LOG_FILE
-echo  Status =$?
+StatusCheck $?
 
 echo "downloading Mongodb schema"
 curl -s -L -o /tmp/mongodb.zip "https://github.com/roboshop-devops-project/mongodb/archive/main.zip" &>>$LOG_FILE
