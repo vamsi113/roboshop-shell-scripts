@@ -23,7 +23,7 @@ echo "Satarting MYSQL Service"
 systemctl restart mysqld &>>$LOG_FILE
 StatusCheck $?
 
-#Storing Temporary Pssword
+echo "Storing Default password"
 DEFAULT_PASSWORD=$(grep 'temporary password' /var/log/mysqld.log | awk '{print $NF}') &>>$LOG_FILE
 StatusCheck $?
 
