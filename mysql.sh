@@ -20,7 +20,7 @@ systemctl enable mysqld &>>$LOG_FILE
 systemctl restart mysqld &>>$LOG_FILE
 StatusCheck $?
 
-echo "Storing Temporary Pssword"
+#Storing Temporary Pssword
 DEFAULT_PASSWORD=$(grep 'temporary password' /var/log/mysqld.log | awk '{print $NF}') &>>$LOG_FILE
 StatusCheck $?
 
