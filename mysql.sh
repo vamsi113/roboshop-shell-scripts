@@ -56,7 +56,7 @@ cd /tmp
 unzip mysql.zip &>>$LOG_FILE
 StatusCheck $?
 
-"echo Load Schema"
+echo "Load Schema"
 cd mysql-main
 mysql -u root -p${ROBOSHOP_MYSQL_PASSWORD} <shipping.sql &>>$LOG_FILE
 StatusCheck $?
