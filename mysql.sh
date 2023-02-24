@@ -58,6 +58,7 @@ cd /tmp
 
 echo "Extract Schema"
 unzip mysql.zip &>>$LOG_FILE
+
 StatusCheck $?
 
 echo "Load Schema"
