@@ -53,10 +53,10 @@ systemctl daemon-reload &>>${LOG_FILE}
 StatusCheck $?
 
 echo "user application starting"
-systemctl restart catalogue &>>${LOG_FILE}
+systemctl restart user &>>${LOG_FILE}
 StatusCheck $?
 
 echo "user application starting at boot level as well"
-systemctl enable catalogue &>>${LOG_FILE}
+systemctl enable user &>>${LOG_FILE}
 StatusCheck $?
 
