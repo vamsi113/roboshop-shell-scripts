@@ -30,7 +30,7 @@ StatusCheck $?
 ### storing changed password
 echo "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('${ROBOSHOP_MYSQL_PASSWORD}'); FLUSH PRIVILEGES;" > /tmp/root-pass.sql
 
-echo "show databases;" | mysql -uroot -p${ROBOSHOP_MYSQL_PASSWORD} &>>${}LOG_FILE}
+echo "show databases;" | mysql -uroot -p${ROBOSHOP_MYSQL_PASSWORD} &>>${LOG_FILE}
 if [ $? -ne 0 ]; then
   echo "Changing mysql default  Root Password"
 
@@ -51,7 +51,7 @@ StatusCheck $?
 
 cd /tmp
 echo "Extract Schema"
-unzip -o mysql.zip &>>$LOG_FILE
+unzip -o mysql.zip &>>${LOG_FILE}
 StatusCheck $?
 
 echo "Load Schema"
