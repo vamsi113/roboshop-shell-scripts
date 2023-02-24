@@ -51,8 +51,14 @@ echo "Download Schema"
 curl -s -L -o /tmp/mysql.zip "https://github.com/roboshop-devops-project/mysql/archive/main.zip" &>>$LOG_FILE
 StatusCheck $?
 
-echo "Extract Schema"
 cd /tmp
+
+echo "remove old content"
+rm -rf mysql &>>${LOG_FILE}
+StatusCheck $?
+
+echo "Extract Schema"
+
 unzip mysql.zip &>>$LOG_FILE
 StatusCheck $?
 
