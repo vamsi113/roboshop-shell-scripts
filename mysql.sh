@@ -54,11 +54,10 @@ StatusCheck $?
 cd /tmp
 
 echo "remove old content"
-rm -rf mysql &>>${LOG_FILE}
+rm -rf * &>>${LOG_FILE}
 StatusCheck $?
 
 echo "Extract Schema"
-
 unzip mysql.zip &>>$LOG_FILE
 StatusCheck $?
 
