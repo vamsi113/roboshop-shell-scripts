@@ -97,6 +97,6 @@ JAVA(){
   mv target/shipping-1.0.jar shipping.jar &>>${LOG_FILE}
   StatusCheck $?
 
-  SYSTEMD_SetUP
+  SYSTEMD_SETUP
 
 }
