@@ -20,9 +20,9 @@ systemctl enable mysqld &>>$LOG_FILE
 systemctl restart mysqld &>>$LOG_FILE
 StatusCheck $?
 
-grep temp /var/log/mysqld.log
+#grep temp /var/log/mysqld.log
 # mysql -uroot -pRoboShop@1
-> uninstall plugin validate_password;
+# uninstall plugin validate_password;
 # curl -s -L -o /tmp/mysql.zip "https://github.com/roboshop-devops-project/mysql/archive/main.zip"
 # curl -s -L -o /tmp/mysql.zip "https://github.com/roboshop-devops-project/mysql/archive/main.zip"
 # cd /tmp
