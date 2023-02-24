@@ -13,7 +13,54 @@ StatusCheck() {
     exit 1
   fi
 }
+APP_PRESETUP(){
+  id roboshop &>>${LOG_FILE}
+    if [ $? -ne 0 ]; then
+      echo "adding Roboshop application User "
+      useradd roboshop &>>${LOG_FILE}
+      StatusCheck $?
+    fi
 
+
+    echo "download ${COMPONENT} application code"
+    curl -s -L -o /tmp/${COMPONENT}.zip "https://github.com/roboshop-devops-project/${COMPONENT}/archive/main.zip" &>>${LOG_FILE}
+    StatusCheck $?
+
+    cd /home/roboshop
+
+    echo "remove old content"
+    rm -rf ${COMPONENT} &>>${LOG_FILE}
+    StatusCheck $?
+
+    echo "Extracting ${COMPONENT} application code"
+    unzip /tmp/${COMPONENT}.zip &>>${LOG_FILE}
+    StatusCheck $?
+
+    mv ${COMPONENT}-main ${COMPONENT}
+    cd /home/roboshop/${COMPONENT}
+
+}
+SYSTEMD_SETUP(){
+  echo "Update SystemD Service File"
+    sed -i -e 's/REDIS_ENDPOINT/redis.roboshop.internal/' -e 's/MONGO_ENDPOINT/mongodb.roboshop.internal/' -e 's/CATALOGUE_ENDPOINT/catalogue.roboshop.internal/' -e 's/MONGO_DNSNAME/mongodb.roboshop.internal/' -e 's/CARTENDPOINT/cart.roboshop.internal/' -e 's/DBHOST/mysql.roboshop.internal/' /home/roboshop/${COMPONENT}/systemd.service
+    StatusCheck $?
+
+  echo "setup ${Component} Service"
+    mv /home/roboshop/${COMPONENT}/systemd.service /etc/systemd/system/${COMPONENT}.service &>>${LOG_FILE}
+    StatusCheck $?
+
+    echo "daemon reload"
+    systemctl daemon-reload &>>${LOG_FILE}
+    StatusCheck $?
+
+    echo "user application starting"
+    systemctl restart ${COMPONENT} &>>${LOG_FILE}
+    StatusCheck $?
+
+    echo "user application starting at boot level as well"
+    systemctl enable ${COMPONENT} &>>${LOG_FILE}
+    StatusCheck $?
+}
 ## NodeJS function Dry Code
 NODEJS(){
   echo "Setup NodeJS repo"
@@ -24,52 +71,32 @@ NODEJS(){
   yum install nodejs -y &>>${LOG_FILE}
   StatusCheck $?
 
-  id roboshop &>>${LOG_FILE}
-  if [ $? -ne 0 ]; then
-    echo "adding Roboshop application User "
-    useradd roboshop &>>${LOG_FILE}
-    StatusCheck $?
-  fi
+  APP_PRESETUP
 
-
-  echo "download ${COMPONENT} application code"
-  curl -s -L -o /tmp/${COMPONENT}.zip "https://github.com/roboshop-devops-project/${COMPONENT}/archive/main.zip" &>>${LOG_FILE}
-  StatusCheck $?
-
-  cd /home/roboshop
-
-  echo "remove old content"
-  rm -rf ${COMPONENT} &>>${LOG_FILE}
-  StatusCheck $?
-
-  echo "Extracting ${COMPONENT} application code"
-  unzip /tmp/${COMPONENT}.zip &>>${LOG_FILE}
-  StatusCheck $?
-
-  mv ${COMPONENT}-main ${COMPONENT}
-  cd /home/roboshop/${COMPONENT}
 
   echo "installing nodejs dependancies"
   npm install &>>${LOG_FILE}
   StatusCheck $?
 
-  echo "Update SystemD Service File"
-  sed -i -e 's/REDIS_ENDPOINT/redis.roboshop.internal/' -e 's/MONGO_ENDPOINT/mongodb.roboshop.internal/' -e 's/CATALOGUE_ENDPOINT/catalogue.roboshop.internal/' -e 's/MONGO_DNSNAME/mongodb.roboshop.internal/' /home/roboshop/${COMPONENT}/systemd.service
+
+
+  SYSTEMD_SETUP
+
+
+}
+
+JAVA(){
+  echo "Install Maven"
+  yum install maven -y &>>${LOG_FILE}
   StatusCheck $?
 
-  echo "setup user service"
-  mv /home/roboshop/${COMPONENT}/systemd.service /etc/systemd/system/${COMPONENT}.service &>>${LOG_FILE}
+  APP_PRESETUP
+
+  echo "Download Dependancies and Make Packages"
+  mvn clean package &>>${LOG_FILE}
+  mv target/shipping-1.0.jar shipping.jar &>>${LOG_FILE}
   StatusCheck $?
 
-  echo "daemon reload"
-  systemctl daemon-reload &>>${LOG_FILE}
-  StatusCheck $?
+  SYSTEMD_SetUP
 
-  echo "user application starting"
-  systemctl restart ${COMPONENT} &>>${LOG_FILE}
-  StatusCheck $?
-
-  echo "user application starting at boot level as well"
-  systemctl enable ${COMPONENT} &>>${LOG_FILE}
-  StatusCheck $?
 }
