@@ -52,9 +52,9 @@ curl -s -L -o /tmp/mysql.zip "https://github.com/roboshop-devops-project/mysql/a
 StatusCheck $?
 
 
-echo "remove old content"
-rm -rf * &>>${LOG_FILE}
-StatusCheck $?
+#echo "remove old content"
+#rm -rf * &>>${LOG_FILE}
+#StatusCheck $?
 
 echo "Extract Schema"
 unzip mysql.zip &>>$LOG_FILE
