@@ -7,7 +7,7 @@ StatusCheck $?
 
 
 echo "Disable MYSQL Default Module to Enable 5.7 MYSQL"
-dnf module disable mysql &>>$LOG_FILE
+dnf module disable mysql -y &>>$LOG_FILE
 StatusCheck $?
 
 
@@ -20,7 +20,8 @@ systemctl enable mysqld &>>$LOG_FILE
 systemctl restart mysqld &>>$LOG_FILE
 StatusCheck $?
 
-#grep temp /var/log/mysqld.log
+echo "Storing "
+grep temp /var/log/mysqld.log
 # mysql -uroot -pRoboShop@1
 # uninstall plugin validate_password;
 # curl -s -L -o /tmp/mysql.zip "https://github.com/roboshop-devops-project/mysql/archive/main.zip"
