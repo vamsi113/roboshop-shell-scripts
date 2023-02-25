@@ -24,9 +24,14 @@ systemctl enable rabbitmq-server &>>${LOG_FILE}
 systemctl start rabbitmq-server &>>${LOG_FILE}
 StatusCheck $?
 
-echo "Add Application User in RabbitMQ"
-rabbitmqctl add_user roboshop roboshop123 &>>${LOG_FILE}
-StatusCheck $?
+echo rabbitmqctl list_users | grep roboshop &>>${LOG_FILE}
+if [ $? -ne 0 ]; then
+  echo "Add Application User in RabbitMQ"
+  rabbitmqctl add_user roboshop roboshop123 &>>${LOG_FILE}
+  StatusCheck $?
+fi
+
+
 
 echo "Add Application User tags in RabbitmQ"
 rabbitmqctl set_user_tags roboshop administrator &>>${LOG_FILE}
