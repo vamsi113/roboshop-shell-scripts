@@ -112,6 +112,12 @@ PYTHON(){
   pip3 install -r requirements.txt &>>${LOG_FILE}
   StatusCheck $?
 
+  echo "Update Payment Configuration File"
+  APP_UID =$(id -u roboshop)
+  APP_GID=$(id -g roboshop)
+  sed -i -e "s/uid/${APP_UID}/" -e "s/gid/${APP_GID}/" /home/roboshop/payment/payment.ini
+
+
   SYSTEMD_SETUP
 
 }
