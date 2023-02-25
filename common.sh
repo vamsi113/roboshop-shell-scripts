@@ -100,3 +100,18 @@ JAVA(){
   SYSTEMD_SETUP
 
 }
+
+PYTHON(){
+  echo "Installing Python 3 "
+  yum install python36 gcc python3-devel -y &>>${LOG_FILE}
+  StatusCheck $?
+
+  APP_PRESETUP
+
+  echo "Installing Pip Requirements "
+  pip3 install -r requirements.txt &>>${LOG_FILE}
+  StatusCheck $?
+
+  SYSTEMD_SETUP
+
+}
