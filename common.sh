@@ -42,8 +42,13 @@ APP_PRESETUP(){
 }
 SYSTEMD_SETUP(){
   echo "Update SystemD Service File"
-    sed -i -e 's/REDIS_ENDPOINT/redis.roboshop.internal/' -e 's/MONGO_ENDPOINT/mongodb.roboshop.internal/' -e 's/CATALOGUE_ENDPOINT/catalogue.roboshop.internal/' -e 's/MONGO_DNSNAME/mongodb.roboshop.internal/' -e 's/CARTENDPOINT/cart.roboshop.internal/' -e 's/DBHOST/mysql.roboshop.internal/' /home/roboshop/${COMPONENT}/systemd.service
+    sed -i -e 's/REDIS_ENDPOINT/redis.roboshop.internal/' -e 's/MONGO_ENDPOINT/mongodb.roboshop.internal/' -e 's/CATALOGUE_ENDPOINT/catalogue.roboshop.internal/' -e 's/MONGO_DNSNAME/mongodb.roboshop.internal/' -e 's/CARTENDPOINT/cart.roboshop.internal/' -e 's/DBHOST/mysql.roboshop.internal/' -e 's/CARTHOST/cart.roboshop.internal/' -e 's/USERHOST/user.roboshop.internal/' -e 's/AMQPHOST/rabbitmq.roboshop.internal/'/home/roboshop/${COMPONENT}/systemd.service
     StatusCheck $?
+
+    Environment=CART_HOST=CARTHOST
+    Environment=USER_HOST=USERHOST
+    Environment=AMQP_HOST=AMQPHOST
+
 
   echo "setup ${Component} Service"
     mv /home/roboshop/${COMPONENT}/systemd.service /etc/systemd/system/${COMPONENT}.service &>>${LOG_FILE}
@@ -115,8 +120,8 @@ PYTHON(){
   echo "Update Payment Configuration File"
   APP_UID=$(id -u roboshop)
   APP_GID=$(id -g roboshop)
-  sed -i -e "s/uid/${APP_UID}/" -e "s/gid/${APP_GID}/" /home/roboshop/payment/payment.ini
-
+  sed -i -e "s/uid/${APP_UID}/" -e "s/gid/${APP_GID}/" /home/roboshop/payment/payment.ini &>>${LOG_FILE}
+  StatusCheck $?
 
   SYSTEMD_SETUP
 
