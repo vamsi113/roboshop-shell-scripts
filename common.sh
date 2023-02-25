@@ -113,7 +113,7 @@ PYTHON(){
   StatusCheck $?
 
   echo "Update Payment Configuration File"
-  APP_UID =$(id -u roboshop)
+  APP_UID=$(id -u roboshop)
   APP_GID=$(id -g roboshop)
   sed -i -e "s/uid/${APP_UID}/" -e "s/gid/${APP_GID}/" /home/roboshop/payment/payment.ini
 
