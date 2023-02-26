@@ -39,3 +39,11 @@ echo "Load User Service Schema"
 mongo < users.js &>>$LOG_FILE
 StatusCheck $?
 
+## Load schema can be done using loops also
+#for schema in catalogue.js users.js ; do
+#  mongo < ${schema} &>>$LOG_FILE
+#done
+
+
+
+
