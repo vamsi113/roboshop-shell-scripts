@@ -25,6 +25,7 @@ echo "Enabling MYSQL Service"
 systemctl enable mysqld &>>${LOG_FILE}
 StatusCheck $?
 
+
 echo "Satarting MYSQL Service"
 systemctl restart mysqld &>>${LOG_FILE}
 StatusCheck $?
